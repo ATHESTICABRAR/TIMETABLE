@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  habits    Habit[]
+}
+
+model Habit {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  icon        String
+  description String?
+  frequency   String     // "daily" or "weekly"
+  target      String?
+  reminder    String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  userId      String     @db.ObjectId
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  logs        HabitLog[]
+}
+
+model HabitLog {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  date      String   // Format: "YYYY-MM-DD"
+  completed Boolean  @default(false)
+  habitId   String   @db.ObjectId
+  habit     Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@unique([habitId, date])
+}
