@@ -26,7 +26,6 @@ const navItems = [
   { name: 'Calendar', href: '/calendar', icon: CalendarDays },
   { name: 'Statistics', href: '/statistics', icon: BarChart2 },
   { name: 'Streaks', href: '/streaks', icon: Flame },
-  { name: 'Reminders', href: '/reminders', icon: Bell },
 ]
 
 const bottomNavItems = [
